@@ -21,12 +21,16 @@ along with it's metadata file in the package.
 
 ```
 library("CircaN")
-# Load expression data and metadata
+```
+Load expression data and metadata and run circan function.
+```
 expression_example <- CircaN::expression_example
 metadata_example <-CircaN::metadata_example
-# Now simply run the circan function
+
 p <- circan(data=expression_example, s2c=metadata_example)
 ```
+
+
 This will run CircaN algorithm on your data with default parameters. Depending on your analysis you may want to change
 those to fit your needs. You can sepcify:
 
