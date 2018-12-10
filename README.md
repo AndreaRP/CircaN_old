@@ -1,6 +1,6 @@
 # CircaN
 
-Nonlinear least squares model for accurate detection of circadian expression patterns.
+Nonlinear least squares model for accurate detection of circadian gene expression.
 
 ## Setup
 If you don't already have, download and install the devtools package.
