@@ -9,4 +9,5 @@ LazyData: true
 RoxygenNote: 6.1.0
 Imports:
 	nlme,
-	broom
+	broom,
+	dplyr
