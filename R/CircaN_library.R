@@ -145,20 +145,6 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
                         , group_col, ind_col, shiny=FALSE, mode="default"
                         , init_value=24, max_per=Inf, min_per=-Inf){
 
-  # data=datafr
-  # s2c=s2c.is
-  # id_col=1
-  # sample_col=1
-  # time_col=3
-  # group_col=2
-  # ind_col=5
-  # shiny=FALSE
-  # mode="port"
-  # init_value=24
-  # max_per=Inf
-  # min_per=-Inf
-
-  # Format s2c so nothing does weird things
   s2c[,time_col] <- as.numeric(as.character(s2c[,time_col]))
   s2c[,ind_col] <- as.integer(as.character(s2c[,ind_col]))
   s2c[,sample_col]<- as.character(s2c[,sample_col])
@@ -174,9 +160,6 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
   data1 <- data[,s2c[which(s2c[,group_col] == G1_name),sample_col]]
   data2 <- data[,s2c[which(s2c[,group_col] == G2_name),sample_col]]
 
-  # data1 <- data[,s2c[which(s2c[,group_col] == unique(s2c[,group_col])[1]),sample_col]]
-  # data2 <- data[,s2c[which(s2c[,group_col] == unique(s2c[,group_col])[2]),sample_col]]
-
   results.cols <- c("estimate.amp","std.error.amp","statistic.amp","p.value.amp"
                     ,"estimate.phase","std.error.phase","statistic.phase","p.value.phase"
                     ,"estimate.per" ,"std.error.per","statistic.per", "p.value.per"
@@ -191,7 +174,6 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
                  , c("feature", paste(results.cols, "2", sep="")))
   comp <- setNames(data.frame(matrix(ncol = length(group.cols), nrow = 0))
                    , group.cols)
-  # results <- new("harmony_data", G1=G1, G2=G2, Comparison=comp)
   results <- new("harmony_data", G1=G1, G2=G2, Comparison=comp
                  , run.info=list(G1=G1_name, G2=G2_name, id_col=id_col, sample_col=sample_col
                                  , time_col=time_col, group_col=group_col
@@ -200,9 +182,7 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
   for(gene in 1:nrow(data)){
     # Center data
     data.cent.1 <- (data1[gene,]-mean(as.numeric(data1[gene,])))
-    # names(data.cent.1) <- names(data1[gene,])
     data.cent.2 <- (data2[gene,]-mean(as.numeric(data2[gene,])))
-    # names(data.cent.2) <- names(data2[gene,])
     # Merged data
     merged_data <- cbind(data.cent.1, data.cent.2)
     rownames(merged_data) <- "data"
@@ -232,8 +212,6 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
       )
 
       # Each group' stats separately
-      # summary(m.str)
-      # stats <- broom::tidy(nls.model)
       stats <- as.data.frame(broom::tidy(nls.model))
       rownames(stats) <- stats[,1]
       coeff <- stats$term
@@ -277,7 +255,6 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
                                , data = gd
                                , start = c(amp1=1, phase1=0, amp2=1, phase2=0, per2=init_value)
           )
-          # cat(stats)
           # statistic values
           stats <- as.data.frame(broom::tidy(nls.model))
           rownames(stats) <- stats[,1]
@@ -305,7 +282,6 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
           rownames(K) <- c("Amp2_Amp1", "Ph2_Ph1")
           colnames(K) <- names(coef(nls.model))
 
-          # group.stats <- tidy(summary(glht(nls.model, linfct = K)))
           group.stats <- as.data.frame(broom::tidy(summary(multcomp::glht(nls.model, linfct = K))))
           rownames(group.stats) <- group.stats[,1]
           coeff.group <- group.stats$lhs
@@ -330,7 +306,6 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
                                  , data = gd
                                  , start = c(amp1=1, phase1=0, amp2=1, phase2=0, per1=init_value)
               )
-              # cat(stats)
               # statistic values
               stats <- as.data.frame(broom::tidy(nls.model))
               rownames(stats) <- stats[,1]
@@ -360,7 +335,6 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
               rownames(K) <- c("Amp2_Amp1", "Ph2_Ph1")
               colnames(K) <- names(coef(nls.model))
 
-              # group.stats <- tidy(summary(glht(nls.model, linfct = K)))
               group.stats <- as.data.frame(broom::tidy(summary(multcomp::glht(nls.model, linfct = K))))
               rownames(group.stats) <- group.stats[,1]
               coeff.group <- group.stats$lhs
@@ -385,7 +359,6 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
                                        , data = gd
                                        , start = c(amp1=1, phase1=0, amp2=1, phase2=0)
                   )
-                  # cat(stats)
                   # statistic values
                   stats <- as.data.frame(broom::tidy(nls.model))
                   rownames(stats) <- stats[,1]
@@ -420,7 +393,6 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
                   rownames(K) <- c("Amp2_Amp1", "Ph2_Ph1")
                   colnames(K) <- names(coef(nls.model))
 
-                  # group.stats <- tidy(summary(glht(nls.model, linfct = K)))
                   group.stats <- as.data.frame(broom::tidy(summary(multcomp::glht(nls.model, linfct = K))))
                   rownames(group.stats) <- group.stats[,1]
                   coeff.group <- group.stats$lhs
@@ -469,7 +441,7 @@ circan_groups <- function(data, s2c, id_col, sample_col, time_col
   results@Comparison$BH.q.value.Ph2_Ph1 <- p.adjust(as.numeric(results@Comparison$p.value.Ph2_Ph1), method="BH")
 
 
-  # if(shiny) incProgress(total_genes/total_genes)
+  if(shiny) incProgress(total_genes/total_genes)
   return(results)
 }
 
